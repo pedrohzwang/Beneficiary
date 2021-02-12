@@ -121,7 +121,7 @@ public class Main {
                 }
 
                 System.out.println("Deseja informar um novo usuário? (S/N):\n");
-                String s = sc.nextLine();
+                String s = sc.next();
                 stop = !s.equalsIgnoreCase("S");
                 s = sc.nextLine();
             } while (stop != true);

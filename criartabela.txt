@@ -1,0 +1,11 @@
+create database beneficiary
+create table beneficiary(
+	id serial not null primary key,
+	name varchar(100) not null,
+	benefit_value decimal(10,2) not null,
+	benefit_duration decimal(10,2) not null,
+	category_id integer not null,
+	born_date varchar(10) not null,
+	state varchar(2) not null,
+	beneficiary char not null
+)

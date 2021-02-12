@@ -37,16 +37,16 @@ public class Employee extends User {
 
         if (isAMState()){
             double addition = additionAM(totalValue);
-            return addition;
+            return Math.ceil(addition);
         }
-        return totalValue;
+        return Math.ceil(totalValue);
     }
 
     @Override
     public double calculateBenefitDuration() {
         double duration = 0.00;
         if (this.isRetired()) {
-            return calculateRetiredBenefitDuration();
+            return Math.ceil(calculateRetiredBenefitDuration());
         } else if (AGE >= 18 || AGE <= 20){
             duration = 5.00;
         } else if(AGE > 20 || AGE <= 25){
@@ -54,7 +54,7 @@ public class Employee extends User {
         } else if(AGE > 25){
             duration = 12.00;
         }
-        return duration;
+        return Math.ceil(duration);
     }
 
     //Regra de negocio especifica E

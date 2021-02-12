@@ -2,6 +2,7 @@ package entities;
 
 import enums.Category;
 
+import java.text.DecimalFormat;
 import java.util.Date;
 
 public class Employer extends User {
@@ -25,19 +26,19 @@ public class Employer extends User {
     public double calculateBenefitValue() {
         double totalValue = 200.00 * getEmployeeQuantity();
         if(getEmployeeQuantity() <= 40) {
-            return calculateValueEmployee(totalValue);
+            return Math.ceil(calculateValueEmployee(totalValue));
         }
         if (isAMState()){
             double addition = additionAM(totalValue);
-            return addition;
+            return Math.ceil(addition);
         }
-        return totalValue;
+        return Math.ceil(totalValue);
     }
 
     //Regra de negocio especifica O
     @Override
     public double calculateBenefitDuration() {
-        return 7.0;
+        return 7.00;
     }
 
     //Regra de negocio especifica D
@@ -45,9 +46,9 @@ public class Employer extends User {
         final double ADDITION = 0.11;
         if (isAMState()){
             double addition = additionAM(totalValue);
-            return addition + (addition * ADDITION);
+            return Math.ceil(addition + (addition * ADDITION));
         }
-        return totalValue + (totalValue * ADDITION);
+        return Math.ceil(totalValue + (totalValue * ADDITION));
     }
 
 }

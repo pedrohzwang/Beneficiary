@@ -26,7 +26,7 @@ public class Unemployed extends User {
         double totalValue = 0.00;
 
         if(getUnemployedMonths() < 6){
-            return calculateBenefitReduction();
+            return Math.ceil(calculateBenefitReduction());
         } else if(getUnemployedMonths() >= 6 || getUnemployedMonths() <= 12) {
             totalValue = 1800.00;
         } else if(getUnemployedMonths() > 12 && getUnemployedMonths() <= 18){
@@ -36,9 +36,9 @@ public class Unemployed extends User {
         }
 
         if(isAMState()){
-            return additionAM(totalValue);
+            return Math.ceil(additionAM(totalValue));
         }
-        return totalValue;
+        return Math.ceil(totalValue);
     }
 
     @Override
