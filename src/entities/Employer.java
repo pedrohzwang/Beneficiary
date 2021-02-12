@@ -34,7 +34,7 @@ public class Employer extends User {
         return totalValue;
     }
 
-    //Regra de negocio especifica E
+    //Regra de negocio especifica O
     @Override
     public double calculateBenefitDuration() {
         return 7.0;

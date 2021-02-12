@@ -24,4 +24,12 @@ public final class BeneficiaryUtil {
         return false;
     }
 
+    public static boolean isBeneficiary(User user){
+        if (user.getCategory().getId() == 1 ||
+            user.getCategory().getId() == 2 ||
+            user.getCategory().getId() == 3){
+            return true;
+        }
+        return false;
+    }
 }

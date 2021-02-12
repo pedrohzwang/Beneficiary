@@ -4,7 +4,7 @@ import enums.Category;
 
 import java.util.Date;
 
-public abstract class User implements interfaces.User {
+public abstract class User implements interfaces.IUser {
 	private String name;
 	private Date bornDate;
 	private String state;

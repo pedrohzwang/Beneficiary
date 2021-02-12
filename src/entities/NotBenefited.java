@@ -4,7 +4,7 @@ import enums.Category;
 
 import java.util.Date;
 
-public class NotBenefited extends User{
+public class NotBenefited extends User {
 
     public NotBenefited(String name, Date bornDate, String state) {
         super(name, bornDate, state, Category.NONE);

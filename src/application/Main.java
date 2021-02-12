@@ -1,7 +1,14 @@
 package application;
 
+import db.ConnectionFactory;
+import db.DBUtil;
 import entities.*;
+import exceptions.DBException;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -10,8 +17,8 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        ArrayList<User> users = new ArrayList();
-        ArrayList<User> beneficiaries = new ArrayList();
+        //ArrayList<User> users = new ArrayList();
+        //ArrayList<User> beneficiaries = new ArrayList();
         boolean stop = false;
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         boolean retired = false;
@@ -20,8 +27,12 @@ public class Main {
         User actualUser = null;
         Double totalValue = 0.00;
         double highestValue = 0;
+        Connection conn = new ConnectionFactory().getConnection();
+        Statement statement = null;
+        ResultSet rs = null;
 
         try (Scanner sc = new Scanner(System.in)){
+            statement = conn.createStatement();
             do {
                 System.out.println("Informe o nome do beneficiário:\n");
                 String name = sc.nextLine();
@@ -72,12 +83,12 @@ public class Main {
                         break;
                 }
 
-                if(categoryId == 1 || categoryId == 2 || categoryId == 3){
+                /*if(categoryId == 1 || categoryId == 2 || categoryId == 3){
                     beneficiaries.add(actualUser);
                     users.add(actualUser);
                 } else {
                     users.add(actualUser);
-                }
+                }*/
 
                 if(actualUser instanceof Employee){
                     Employee other = (Employee) actualUser;
@@ -100,20 +111,42 @@ public class Main {
                     System.out.println("Infelizmente você não tem direito ao benefício.");
                 }
 
+                DBUtil.insertIntoDatabase(actualUser);
 
-                
-                System.out.println("Deseja informar um novo beneficiário? (S/N):\n");
+
+                System.out.println("Deseja deletar algum usuário do cadastro? (S/N):\n");
+                if(sc.nextLine().equalsIgnoreCase("S")){
+                    System.out.println("\nInforme o id do usuário a ser deletado:");
+                    DBUtil.deleteFromDatabase(sc.nextInt());
+                }
+
+                System.out.println("Deseja informar um novo usuário? (S/N):\n");
                 String s = sc.nextLine();
                 stop = !s.equalsIgnoreCase("S");
+                s = sc.nextLine();
             } while (stop != true);
 
-            System.out.println("Total de usuários lidos: " + users.size());
+            DBUtil.listAll();
+            DBUtil.quantityUsers();
+            DBUtil.quantityBeneficiaries();
+            DBUtil.getTotalBenefitValue();
+            System.out.println("Beneficiários com maior valor de benfício: \n");
+            DBUtil.bestPaidBeneficiary();
+            System.out.println("Beneficiários com maior duração de benfício: \n");
+            DBUtil.mostLongerBenefitBeneficiary();
+            /*System.out.println("Total de usuários lidos: " + users.size());
             System.out.println("Total de beneficiários: " + beneficiaries.size());
-            System.out.println("Valor total concedido: " + totalValue);
+            System.out.println("Valor total concedido: " + totalValue);*/
 
-            
         } catch (RuntimeException | ParseException ex){
             System.out.println(ex.getMessage());
+        } catch (SQLException ex) {
+            throw new DBException(ex.getMessage());
+        }
+        finally {
+            DBUtil.closeResultSet(rs);
+            DBUtil.closeStatemente(statement);
+            DBUtil.closeConnection(conn);
         }
     }
 }
